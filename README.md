@@ -142,6 +142,12 @@ Defined in `Utils/Responses.js`.
 
 ---
 
+## Support
+
+For support, issues, or enhancements, please open an issue in this repository or join our discord support server.
+
+[Join Support Server](https://discord.gg/thunderdoesdev)
+
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
