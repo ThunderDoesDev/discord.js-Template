@@ -137,8 +137,9 @@ module.exports = {
     client: [],
     user: [],
     staff: {
-        developers: false
-    },
+      developers: false
+    }
+  },
   run: async (client, interaction) => {
     return interaction.reply("Hello!");
   }
