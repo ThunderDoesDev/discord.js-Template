@@ -8,7 +8,7 @@ module.exports = {
     description: "Displays the bot's ping and latency information.",
     cooldowns: 3,
     usage: [],
-    disabled: true,
+    disabled: false,
     permissions: {
         client: [],
         user: [],
