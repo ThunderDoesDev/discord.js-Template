@@ -1,6 +1,6 @@
 # discord.js-Template
 
-A **Discord.js v14 slash-command template** built for clarity, scalability, and predictable execution.
+A **Discord.js v14 slash-command template** built for clarity, scalability and predictable execution.
 
 This template is designed around:
 - guard-first execution
@@ -120,8 +120,15 @@ Commands live in `Commands/<Category>/`
 module.exports = {
   name: "hello",
   description: "Replies with a greeting.",
+  cooldowns: 3,
+  usage: [],
   disabled: false,
-
+  permissions: {
+    client: [],
+    user: [],
+    staff: {
+        developers: false
+    },
   run: async (client, interaction) => {
     return interaction.reply("Hello!");
   }
