@@ -1,1 +1,1 @@
-# Advanced-discord.js-Template
+# discord.js-Template
