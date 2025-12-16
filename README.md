@@ -83,6 +83,7 @@ Edit `Settings/Config.json`:
 
 ```json
 {
+  {
   "bot": {
     "token": "your_bot_token",
     "id": "your_bot_id",
@@ -92,15 +93,14 @@ Edit `Settings/Config.json`:
     "vote": "your-vote-link",
     "maintenanceMode": false,
     "debugMode": false,
-    "ourGuilds": ["your-guild-ids"],
+    "ourGuilds": ["your-guild-id"],
     "embedColor": "your-embed-color"
-    }, 
-    channels": {
-     "errors": "your-errors-channel-id",
-     "guilds": "your-guilds-channel-id",
-     "commands": "your-commands-channel-id",
-     "journal": "your-journal-channel-id"
-    }
+  },
+  "channels": {
+    "errors": "your-errors-channel-id",
+    "guilds": "your-guilds-channel-id",
+    "commands": "your-commands-channel-id",
+    "journal": "your-journal-channel-id"
   }
 }
 ```
