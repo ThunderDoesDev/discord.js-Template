@@ -84,12 +84,23 @@ Edit `Settings/Config.json`:
 ```json
 {
   "bot": {
-    "token": "YOUR_BOT_TOKEN",
-    "id": "YOUR_APPLICATION_ID",
-    "name": "YourBotName",
-    "developer": ["YOUR_DISCORD_ID"],
+    "token": "your_bot_token",
+    "id": "your_bot_id",
+    "name": "your_bot_name",
+    "supportGuild": "your-support-guild-id",
+    "invite": "your-invite-link",
+    "vote": "your-vote-link",
     "maintenanceMode": false,
-    "embedColor": "#5865F2"
+    "debugMode": false,
+    "ourGuilds": ["your-guild-ids"],
+    "embedColor": "your-embed-color"
+    }, 
+    channels": {
+     "errors": "your-errors-channel-id",
+     "guilds": "your-guilds-channel-id",
+     "commands": "your-commands-channel-id",
+     "journal": "your-journal-channel-id"
+    }
   }
 }
 ```
