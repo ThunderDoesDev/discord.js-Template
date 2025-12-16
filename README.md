@@ -112,7 +112,7 @@ node Sharding.js
 
 ## Commands
 
-Commands live in `Commands/<Category>/`.
+Commands live in `Commands/<Category>/`
 
 ### Example Command
 
