@@ -1,0 +1,21 @@
+{
+    "bot": {
+        "token": "your-bot-token",
+        "id": "your-bot-id",
+        "name": "your-bot-name",
+        "developer": ["your-developer-ids"],
+        "supportGuild": "your-support-guild-id",
+        "invite": "your-invite-link",
+        "vote": "your-vote-link",
+        "maintenanceMode": false,
+        "debugMode": false,
+        "ourGuilds": ["your-guild-ids"],
+        "embedColor": "your-embed-color"
+    },
+    "channels": {
+        "errors": "your-errors-channel-id",
+        "guilds": "your-guilds-channel-id",
+        "commands": "your-commands-channel-id",
+        "journal": "your-journal-channel-id"
+    }
+}

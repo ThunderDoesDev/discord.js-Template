@@ -1,0 +1,23 @@
+{
+  "name": "template",
+  "version": "1.0.0",
+  "description": "An empty Discord slash command bot template",
+  "license": "MIT",
+  "author": "ThunderDoesDev",
+  "type": "commonjs",
+  "main": "Sharding.js",
+  "scripts": {
+    "start": "node Sharding.js",
+    "dev": "nodemon Sharding.js"
+  },
+  "dependencies": {
+    "@discordjs/rest": "^2.4.3",
+    "cfonts": "^3.3.0",
+    "chalk": "^4.1.2",
+    "discord-api-types": "^0.38.1",
+    "discord.js": "^14.19.1",
+    "fs": "^0.0.1-security",
+    "moment": "^2.30.1",
+    "util": "^0.12.5"
+  }
+}

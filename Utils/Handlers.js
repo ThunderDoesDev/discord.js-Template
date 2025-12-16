@@ -1,0 +1,214 @@
+const fs = require("fs");
+const {
+    SlashCommandBuilder,
+    ApplicationCommandOptionType,
+    Routes,
+    REST
+} = require("discord.js");
+
+
+/**
+ * LOAD THE CLIENT EVENTS
+ */
+const eventsLoader = async function (client) {
+    try {
+        fs.readdir("./Events/", async (err, files) => {
+            let data = []
+            if (files) {
+                await files.map(async (folder) => {
+                    data.push(folder)
+                })
+            }
+            if (data.length !== 0) {
+                let loadedEvents = 0;
+                await data.forEach(folderName => {
+                    fs.readdir(`./Events/${folderName}/`, (err, files) => {
+                        if (err) console.error(err);
+                        let jsfiles = files.filter(f => f.split(".").pop().toLowerCase() === "js");
+                        if (jsfiles.length > 0) {
+                            jsfiles.forEach((f) => {
+                                loadedEvents = loadedEvents + 1;
+                                try {
+                                    const event = require(`../Events/${folderName}/${f}`);
+                                    let eventname = f.replace('.js', '');
+                                    if (eventname) {
+                                        const discordEventName = eventname.charAt(0).toLowerCase() + eventname.slice(1);
+                                        client.on(discordEventName, event.run.bind(null, client));
+                                    }
+                                } catch (err) {
+                                    console.error(`Error loading event ${f}:`, err);
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        })
+    } catch (error) {
+        return client.errors(client, error.stack, 'event');
+    }
+}
+
+/**
+ * LOAD THE COMMANDS
+ */
+const commandsLoader = async function (client) {
+    try {
+        fs.readdir("./Commands/", async (err, files) => {
+            let data = []
+            if (files) {
+                await files.map(async (folder) => {
+                    data.push(folder)
+                })
+            }
+            if (data.length !== 0) {
+                data.map(folderName => {
+                    fs.readdir(`./Commands/${folderName}/`, (err, files) => {
+                        let jsfiles = files.filter(f => f.split(".").pop() === "js");
+                        if (jsfiles.length > 0) {
+                            jsfiles.forEach((f) => {
+                                let props = require(`../Commands/${folderName}/${f}`);
+                                if (props) {
+                                    props.category = folderName;
+                                    client.slash.set(`${folderName.toLowerCase()}-${props.name.toLowerCase()}`, props);
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        })
+    } catch (error) {
+        return client.errors(client, error.stack, 'Event');
+    }
+}
+
+/**
+ * LOAD THE SLASH COMMANDS
+ */
+const loadSlashCommands = async function (client) {
+    try {
+        let slashCmds = [];
+        let subCommands = [];
+        let loadedCommands = 0;
+        await fs.readdir("./Commands/", async (err, files) => {
+            let data = []
+            if (files) {
+                await files.map(async (folder) => {
+                    data.push(folder)
+                })
+            }
+            if (data.length !== 0) {
+                await data.map(async folderName => {
+                    await fs.readdir(`./Commands/${folderName}/`, async (err, files) => {
+                        let slashcommands = new SlashCommandBuilder().setName(`${folderName.toLowerCase()}`).setDescription(`${folderName} commands`);
+                        if (err) console.error(err);
+                        let jsfiles = files.filter(f => f.split(".").pop() === "js");
+                        if (jsfiles.length > 0) {
+                            await jsfiles.forEach(async (f) => {
+                                let SubCommand = null;
+                                await slashcommands.addSubcommand((subcommand) => SubCommand = subcommand); // register file as subcmd
+                                let props = require(`../Commands/${folderName}/${f}`);
+                                if (props && SubCommand) {
+                                    subCommands.push(props.name)
+                                    SubCommand.setName(`${props.name.toLowerCase()}`) //set subcmd name aka commandName
+                                    SubCommand.setDescription(`${props.description}`);
+                                    if (props.options && props.options.length > 0) {
+                                        await props.options.map(async opt => {
+                                            if (opt.type === ApplicationCommandOptionType.User) {
+                                                SubCommand.addUserOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Boolean) {
+                                                SubCommand.addBooleanOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Channel) {
+                                                SubCommand.addChannelOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Integer) {
+                                                SubCommand.addIntegerOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Mentionable) {
+                                                SubCommand.addMentionableOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Number) {
+                                                SubCommand.addNumberOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Role) {
+                                                SubCommand.addRoleOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.Attachment) {
+                                                SubCommand.addAttachmentOption((option) =>
+                                                    option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required),
+                                                )
+                                            }
+                                            if (opt.type === ApplicationCommandOptionType.String) {
+                                                let option = null;
+                                                await SubCommand.addStringOption((opt) => option = opt)
+                                                if (option) {
+                                                    if (opt.choices && opt.choices.length !== 0) {
+                                                        await opt.choices.map(opt => {
+                                                            option.addChoices({
+                                                                name: `${opt.name}`,
+                                                                value: `${opt.value}`
+                                                            })
+                                                        })
+                                                    }
+                                                    await option.setName(`${opt.name.toLowerCase()}`).setDescription(`${opt.description}`).setRequired(opt.required)
+                                                    if((!opt.choices || opt.choices.length == 0) && opt.autocomplete == true) {
+                                                        option.setAutocomplete(true)
+                                                    }
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }
+                            });
+                        }
+                        setTimeout(async () => {
+                            loadedCommands = loadedCommands + slashcommands.options.length;
+                            let slash = slashcommands.toJSON()
+                            await slashCmds.push(slash);
+                        }, 2000)
+                    });
+                });
+            }
+        })
+        setTimeout(async () => {
+            const rest = new REST({
+                version: '10'
+            }).setToken(client.settings.bot.token);
+            await rest.put(Routes.applicationCommands(client.user.id), {
+                body: slashCmds
+            }).then(s => {
+                client.logger.log(`EVENTS`, `Loaded (${client._eventsCount}) Events.`)
+                client.logger.log(`REGISTERED COMMANDS`, `Loaded (${loadedCommands}/${client.slash.size}) Slash Commands.`)
+                client.logger.log("SLASH", `Registered ${slashCmds.length} as Slash Categorys and ${subCommands.length} Slash Commands.`)
+            }).catch(e => {
+                client.logger.error(`Err registering slash -> ${e}`)
+            })
+        }, 3000) // when u hve lot commands best to raise this time a bit so u make sure it loaded all commands into the slashCmds array 
+    } catch (error) {
+        return client.errors(client, error.stack, 'Event');
+    }
+}
+
+module.exports = {
+    eventsLoader,
+    commandsLoader,
+    loadSlashCommands
+};
