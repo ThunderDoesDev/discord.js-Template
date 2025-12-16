@@ -83,7 +83,6 @@ Edit `Settings/Config.json`:
 
 ```json
 {
-  {
   "bot": {
     "token": "your_bot_token",
     "id": "your_bot_id",
