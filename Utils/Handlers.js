@@ -1,18 +1,9 @@
-const fs = require("fs");
-const {
-    SlashCommandBuilder,
-    ApplicationCommandOptionType,
-    Routes,
-    REST
-} = require("discord.js");
-
-
 /**
  * LOAD THE CLIENT EVENTS
- */
+*/
 const eventsLoader = async function (client) {
     try {
-        fs.readdir("./Events/", async (err, files) => {
+        client.modules.fs.readdir("./Events/", async (err, files) => {
             let data = []
             if (files) {
                 await files.map(async (folder) => {
@@ -22,7 +13,7 @@ const eventsLoader = async function (client) {
             if (data.length !== 0) {
                 let loadedEvents = 0;
                 await data.forEach(folderName => {
-                    fs.readdir(`./Events/${folderName}/`, (err, files) => {
+                    client.modules.fs.readdir(`./Events/${folderName}/`, (err, files) => {
                         if (err) console.error(err);
                         let jsfiles = files.filter(f => f.split(".").pop().toLowerCase() === "js");
                         if (jsfiles.length > 0) {
@@ -45,16 +36,16 @@ const eventsLoader = async function (client) {
             }
         })
     } catch (error) {
-        return client.errors(client, error.stack, 'event');
+        return client.errors(client, error.stack, 'Event');
     }
 }
 
 /**
  * LOAD THE COMMANDS
- */
+*/
 const commandsLoader = async function (client) {
     try {
-        fs.readdir("./Commands/", async (err, files) => {
+        client.modules.fs.readdir("./Commands/", async (err, files) => {
             let data = []
             if (files) {
                 await files.map(async (folder) => {
@@ -63,7 +54,7 @@ const commandsLoader = async function (client) {
             }
             if (data.length !== 0) {
                 data.map(folderName => {
-                    fs.readdir(`./Commands/${folderName}/`, (err, files) => {
+                    client.modules.fs.readdir(`./Commands/${folderName}/`, (err, files) => {
                         let jsfiles = files.filter(f => f.split(".").pop() === "js");
                         if (jsfiles.length > 0) {
                             jsfiles.forEach((f) => {
@@ -85,13 +76,14 @@ const commandsLoader = async function (client) {
 
 /**
  * LOAD THE SLASH COMMANDS
- */
+*/
 const loadSlashCommands = async function (client) {
     try {
+        const { SlashCommandBuilder, ApplicationCommandOptionType, Routes, REST } = client.modules.discord;
         let slashCmds = [];
         let subCommands = [];
         let loadedCommands = 0;
-        await fs.readdir("./Commands/", async (err, files) => {
+        await client.modules.fs.readdir("./Commands/", async (err, files) => {
             let data = []
             if (files) {
                 await files.map(async (folder) => {
@@ -100,7 +92,7 @@ const loadSlashCommands = async function (client) {
             }
             if (data.length !== 0) {
                 await data.map(async folderName => {
-                    await fs.readdir(`./Commands/${folderName}/`, async (err, files) => {
+                    await client.modules.fs.readdir(`./Commands/${folderName}/`, async (err, files) => {
                         let slashcommands = new SlashCommandBuilder().setName(`${folderName.toLowerCase()}`).setDescription(`${folderName} commands`);
                         if (err) console.error(err);
                         let jsfiles = files.filter(f => f.split(".").pop() === "js");

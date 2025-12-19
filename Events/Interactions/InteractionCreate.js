@@ -1,14 +1,7 @@
-const {
-    InteractionType,
-    Colors,
-    EmbedBuilder,
-    PermissionsBitField
-} = require("discord.js");
-
 module.exports.run = async (client, interaction, args) => {
     try {
         // Handle Application Command Interactions
-        if (interaction.type === InteractionType.ApplicationCommand && !interaction.user.bot) {
+        if (interaction.type === client.modules.discord.InteractionType.ApplicationCommand && !interaction.user.bot) {
             // Maintenance Mode Check
             const developerIds = Array.isArray(client.settings.bot.developer) ? client.settings.bot.developer : [client.settings.bot.developer];
             const isDeveloper = developerIds.includes(interaction.member.id);
@@ -71,7 +64,7 @@ module.exports.run = async (client, interaction, args) => {
             // Client Commands logging
             const fetchChannel = client.channels.cache.find(chan => chan.id === client.settings.channels.commands) || null;
             if (fetchChannel) {
-                const embed = new EmbedBuilder()
+                const embed = new client.modules.discord.EmbedBuilder()
                     .setTitle(`${interaction.guild.name} • Slash Used`)
                     .addFields({
                         name: `**Slash Used:**`,
@@ -113,8 +106,8 @@ module.exports.run = async (client, interaction, args) => {
                 const missingUserPerms = cmd.permissions.user.filter(perm => !interaction.member.permissions.has(perm));
                 if (missingUserPerms.length > 0) {
                     const permNames = missingUserPerms.map(perm => {
-                        const permName = Object.keys(PermissionsBitField.Flags).find(
-                            key => PermissionsBitField.Flags[key] === perm
+                        const permName = Object.keys(client.modules.discord.PermissionsBitField.Flags).find(
+                            key => client.modules.discord.PermissionsBitField.Flags[key] === perm
                         );
                         return permName || 'Unknown Permission';
                     });
@@ -129,8 +122,8 @@ module.exports.run = async (client, interaction, args) => {
                 const missingBotPerms = cmd.permissions.client.filter(perm => !interaction.guild.members.me.permissions.has(perm));
                 if (missingBotPerms.length > 0) {
                     const permNames = missingBotPerms.map(perm => {
-                        const permName = Object.keys(PermissionsBitField.Flags).find(
-                            key => PermissionsBitField.Flags[key] === perm
+                        const permName = Object.keys(client.modules.discord.PermissionsBitField.Flags).find(
+                            key => client.modules.discord.PermissionsBitField.Flags[key] === perm
                         );
                         return permName || 'Unknown Permission';
                     });

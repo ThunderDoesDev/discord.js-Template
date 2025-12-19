@@ -1,14 +1,9 @@
-const {
-    EmbedBuilder,
-    Colors,
-} = require("discord.js");
-
 module.exports = {
     name: "ping",
     description: "Displays the bot's ping and latency information.",
     cooldowns: 3,
     usage: [],
-    disabled: false,
+    disabled: true,
     permissions: {
         client: [],
         user: [],
@@ -18,7 +13,7 @@ module.exports = {
     },
     run: async (client, interaction, args) => {
         try {
-            const embed = new EmbedBuilder()
+            const embed = new client.modules.discord.EmbedBuilder()
                 .setTitle(`${client.settings.bot.name} • Bot Ping`)
                 .addFields({
                     name: `**Websocket Ping:**`,

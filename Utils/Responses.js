@@ -1,24 +1,20 @@
-const {
-    EmbedBuilder,
-    Colors,
-    MessageFlags
-} = require('discord.js');
-
-const RESPONSE_TYPES = {
-    Reply: {
-        color: Colors.Red,
-        flags: MessageFlags.Ephemeral,
-        sendMethod: 'Reply'
-    },
-    FollowUp: {
-        color: Colors.Red,
-        flags: MessageFlags.Ephemeral,
-        sendMethod: 'FollowUp'
-    },
-    Channel: {
-        color: Colors.Red,
-        sendMethod: 'Send'
-    }
+const getResponseTypes = (client) => {
+    return {
+        Reply: {
+            color: client.modules.discord.Colors.Red,
+            flags: client.modules.discord.MessageFlags.Ephemeral,
+            sendMethod: 'Reply'
+        },
+        FollowUp: {
+            color: client.modules.discord.Colors.Red,
+            flags: client.modules.discord.MessageFlags.Ephemeral,
+            sendMethod: 'FollowUp'
+        },
+        Channel: {
+            color: client.modules.discord.Colors.Red,
+            sendMethod: 'Send'
+        }
+    };
 };
 const RESPONSES = {
     Commands: {
@@ -70,10 +66,11 @@ const RESPONSES = {
 };
 
 const createEmbed = (interaction, title, description, options = {}) => {
+    const client = interaction.client;
     const {
         author = null,
-            color = Colors.Red,
-            footer = interaction.client.footer,
+            color = client.modules.discord.Colors.Red,
+            footer = client.footer,
             fields = [],
             components = [],
             logo = null,
@@ -82,7 +79,7 @@ const createEmbed = (interaction, title, description, options = {}) => {
     if (description && asCodeBlock) {
         description = `\`\`\`${description}\`\`\``;
     }
-    const embed = new EmbedBuilder()
+    const embed = new client.modules.discord.EmbedBuilder()
         .setTitle(title)
         .setDescription(description || 'No description provided.')
         .setColor(options.color || color)
@@ -102,6 +99,7 @@ const createEmbed = (interaction, title, description, options = {}) => {
 
 const send = async (interaction, type, args = {}) => {
     try {
+        const client = interaction.client;
         let responseConfig;
         if (type.includes('.')) {
             const path = type.split('.');
@@ -130,6 +128,7 @@ const send = async (interaction, type, args = {}) => {
             });
         }
         const responseType = responseConfig.type || 'Reply';
+        const RESPONSE_TYPES = getResponseTypes(client);
         const settings = {
             ...RESPONSE_TYPES[responseType],
             ...args,
@@ -156,7 +155,7 @@ const send = async (interaction, type, args = {}) => {
                 return interaction.reply(messageOptions);
         }
     } catch (error) {
-        return interaction.client.errors(interaction.client, error.stack, interaction);
+        return client.errors(client, error.stack, interaction);
     }
 }
 

@@ -1,9 +1,3 @@
-const {
-    ActivityType,
-    Colors,
-    EmbedBuilder
-} = require("discord.js");
-
 async function updateStatus(client) {
     const statuses = [
         `${client.users.cache.size} Users`,
@@ -15,7 +9,7 @@ async function updateStatus(client) {
         activities: [{
             name: status,
             state: status,
-            type: ActivityType.Custom
+            type: client.modules.discord.ActivityType.Custom
         }],
         status: 'online'
     });
@@ -33,7 +27,7 @@ module.exports.run = async (client) => {
             const totalMembers = memberNum.reduce((prev, memberCount) => prev + memberCount, 0);
             let journalChannel = client.channels.cache.find(chan => chan.id === client.settings.channels.journal) || null;
             if (journalChannel) {
-                const embed = new EmbedBuilder()
+                const embed = new client.modules.discord.EmbedBuilder()
                     .setTitle(`${client.user.username} • Ready & Online`)
                     .addFields({
                         name: `**Total Members:**`,

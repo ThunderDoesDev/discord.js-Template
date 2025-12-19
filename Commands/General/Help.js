@@ -1,8 +1,3 @@
-const {
-    EmbedBuilder,
-    Colors
-} = require('discord.js');
-
 module.exports = {
     name: "help",
     description: "Sends you a detailed list of my commands.",
@@ -42,7 +37,7 @@ module.exports = {
                     return `**${cat.charAt(0).toUpperCase() + cat.slice(1)}:**\n${list}`;
                 });            
             const allText = categorizedText.join('\n');
-            const embed = new EmbedBuilder()
+            const embed = new client.modules.discord.EmbedBuilder()
                 .setTitle(`${client.settings.bot.name || client.user.username} • All Commands`)
                 .setDescription(allText)
                 .setColor(client.settings.bot.embedColor)

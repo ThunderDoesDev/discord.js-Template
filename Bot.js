@@ -42,11 +42,12 @@ client.loadedCommands = new Discord.Collection();
 
 client.settings = require("./Settings/Config.json");
 client.packages = require("./package.json");
-client.logger = require("./Utils/Logger.js");
 client.modules = require("./Utils/Modules.js");
+client.logger = require("./Utils/Logger.js");
 client.errors = require("./Utils/Errors.js");
 client.responses = require("./Utils/Responses.js");
 client.handlers = require('./Utils/Handlers.js');
+client.pagination = require('./Utils/Pagination.js');
 
 client.handlers.eventsLoader(client);
 client.handlers.commandsLoader(client);

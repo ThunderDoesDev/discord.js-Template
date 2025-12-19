@@ -1,8 +1,3 @@
-const {
-    EmbedBuilder,
-    Colors,
-} = require("discord.js");
-
 module.exports = {
     name: "uptime",
     description: "Displays the bot and server uptime information.",
@@ -22,7 +17,7 @@ module.exports = {
             const serverUptimeSeconds = Math.floor(client.modules.os.uptime());
             const botUptimeTimestamp = Math.floor(Date.now() / 1000) - botUptimeSeconds;
             const serverUptimeTimestamp = Math.floor(Date.now() / 1000) - serverUptimeSeconds;
-            const embed = new EmbedBuilder()
+            const embed = new client.modules.discord.EmbedBuilder()
                 .setTitle(`${client.settings.bot.name} • Uptime`)
                 .addFields({
                     name: `**Bot Uptime:**`,

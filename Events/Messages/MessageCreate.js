@@ -1,16 +1,10 @@
-const {
-    ButtonBuilder,
-    ButtonStyle,
-    Colors,
-    EmbedBuilder
-} = require('discord.js');
-
 module.exports.run = async (client, message, args) => {
     try {
         if (message.content === `<@${client.user.id}>` || message.content === `<@!${client.user.id}>`) {
             if (!message.author.bot) {
-                const supportButton = new ButtonBuilder().setURL(`${client.settings.bot.supportGuild}`).setLabel('Support Server').setStyle(ButtonStyle.Link);
-                const embed = new EmbedBuilder()
+                const supportButton = new client.modules.discord.ButtonBuilder().setURL(`${client.settings.bot.supportGuild}`).setLabel('Support Server').setStyle(client.modules.discord.ButtonStyle.Link);
+                const actionRow = new client.modules.discord.ActionRowBuilder().addComponents(supportButton);
+                const embed = new client.modules.discord.EmbedBuilder()
                     .setTitle(`Hello there, I'm ${client.user.username}.`)
                     .setDescription("I am your assistant, how can I help you today?")
                     .addFields({
@@ -27,7 +21,7 @@ module.exports.run = async (client, message, args) => {
                     .setTimestamp();
                 return message.reply({
                     embeds: [embed],
-                    components: [supportButton]
+                    components: [actionRow]
                 });
             }
         }

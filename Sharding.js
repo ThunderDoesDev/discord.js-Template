@@ -19,6 +19,8 @@ const manager = new ShardingManager('./Bot.js', {
     spawnTimeout: 300000,
 });
 
+manager.modules = require("./Utils/Modules.js");
+
 Events.eventsLoader(manager, './Events/Sharding');
 
 (async () => {
