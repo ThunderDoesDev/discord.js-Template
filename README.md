@@ -43,7 +43,7 @@ This template is designed around:
 ## Project Structure
 
 ```
-
+.
 ├─ Commands/
 │  ├─ Developer/
 │  │  └─ Guilds.js
