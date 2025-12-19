@@ -22,7 +22,6 @@ This template is designed around:
 
 ## Project Structure
 
-```
 .
 ├─ Commands/
 │  ├─ Developer/
@@ -65,7 +64,6 @@ This template is designed around:
 ├─ Sharding.js
 ├─ package.json
 └─ start.bat
-```
 
 ---
 
@@ -73,15 +71,12 @@ This template is designed around:
 
 ### Install dependencies
 
-```bash
 npm install
-```
 
 ### Configure the bot
 
-Edit `Settings/Config.json`:
+Edit Settings/Config.json:
 
-```json
 {
   "bot": {
     "token": "your_bot_token",
@@ -102,31 +97,24 @@ Edit `Settings/Config.json`:
     "journal": "your-journal-channel-id"
   }
 }
-```
 
 ---
 
 ## Running the Bot
 
-```bash
 node Bot.js
-```
 
 Optional sharding:
 
-```bash
 node Sharding.js
-```
 
 ---
 
 ## Commands
 
-Commands live in `Commands/<Category>/`
+Commands live in Commands/<Category>/
 
 ### Example Command
-
-```js
 module.exports = {
   name: "hello",
   description: "Replies with a greeting.",
@@ -144,19 +132,16 @@ module.exports = {
     return interaction.reply("Hello!");
   }
 };
-```
 
 ---
 
 ## Responses Helper
 
-Use responses as **early-return guards** or reusable replies.
+Use responses as early-return guards or reusable replies.
 
-```js
 if (!value) return client.responses("Commands.General.missingValue", interaction);
-```
 
-Defined in `Utils/Responses.js`.
+Defined in Utils/Responses.js.
 
 ---
 
@@ -165,9 +150,7 @@ Defined in `Utils/Responses.js`.
 Modules provide central access to reusable packages and utilities, attatched to the Discord client at startup.  
 Defined in:
 
-```
 Utils/Modules.js
-```
 
 Modules currently bundled:
 
@@ -180,19 +163,61 @@ Modules currently bundled:
 
 Attached during client init:
 
-```js
 client.modules = require("./Utils/Modules.js");
-```
 
 Usage example:
 
-```js
 client.modules.chalk.blue("Bot is online!");
 client.modules.fs.readdirSync("./Commands");
 client.modules.inspect(client);
-```
 
 This avoids requiring the same packages repeatedly throughout the bot and keeps logic clean and centralised.
+
+All Commands, Events and Utils that use imports now use them directly from client.modules.
+
+---
+
+## Advanced Pagination
+
+An optional pagination system is included that allows you to embed and scroll through data such as guilds, users, roles, messages, etc.  
+
+Example implementation:
+const guilds = client.guilds.cache.map(guild => {
+    const owner = client.users.cache.get(guild.ownerId);
+    return {
+        name: guild.name,
+        id: guild.id,
+        owner: owner ? owner.username : 'Unknown',
+        memberCount: guild.memberCount
+    }
+});
+const embedGenerator = (pageGuilds, currentPage, totalPages) => {
+    let description = '';
+    pageGuilds.forEach(guild => {
+        description += `• ${guild.name} — ${guild.owner} - ${guild.memberCount}\n`;
+    });
+    return {
+        title: `${interaction.guild.name} • Guilds`,
+        description: description,
+        footer: { text: `Page ${currentPage} of ${totalPages}` },
+        thumbnail: client.user.displayAvatarURL({ dynamic: true }),
+        color: client.settings.bot.embedColor
+    };
+};
+await client.pagination.createPagination({
+    client,
+    items: guilds,
+    itemsPerPage: 5,
+    embedGenerator,
+    interaction,
+    timeout: 1000000,
+    ephemeral: false,
+    emptyOptions: {
+        color: client.modules.discord.Colors.Red,
+        title: 'No Guilds',
+        description: 'No guilds were found for this server.'
+    }
+});
 
 ---
 
