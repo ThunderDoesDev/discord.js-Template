@@ -160,6 +160,42 @@ Defined in `Utils/Responses.js`.
 
 ---
 
+## Modules
+
+Modules provide central access to reusable packages and utilities, attatched to the Discord client at startup.  
+Defined in:
+
+```
+Utils/Modules.js
+```
+
+Modules currently bundled:
+
+- discord.js  
+- cfonts  
+- chalk  
+- fs  
+- util.inspect  
+- moment  
+
+Attached during client init:
+
+```js
+client.modules = require("./Utils/Modules.js");
+```
+
+Usage example:
+
+```js
+client.modules.chalk.blue("Bot is online!");
+client.modules.fs.readdirSync("./Commands");
+client.modules.inspect(client);
+```
+
+This avoids requiring the same packages repeatedly throughout the bot and keeps logic clean and centralised.
+
+---
+
 ## Support
 
 For support, issues, or enhancements, please open an issue in this repository or join our discord support server.
