@@ -118,7 +118,6 @@ Edit `Settings/Config.json`:
   },
   "channels": {
     "errors": "your-errors-channel-id",
-    "guilds": "your-guilds-channel-id",
     "commands": "your-commands-channel-id",
     "journal": "your-journal-channel-id"
   }
