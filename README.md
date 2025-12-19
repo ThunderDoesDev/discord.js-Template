@@ -42,6 +42,7 @@ This template is designed around:
 
 ## Project Structure
 
+```
 .
 ├─ Commands/
 │  ├─ Developer/
@@ -85,6 +86,7 @@ This template is designed around:
 ├─ Sharding.js
 ├─ package.json
 └─ start.bat
+```
 
 ---
 
