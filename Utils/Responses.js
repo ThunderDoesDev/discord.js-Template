@@ -18,7 +18,13 @@ const getResponseTypes = (client) => {
 };
 const RESPONSES = {
     Commands: {
-        
+        CommandInfo: {
+            noCommandMatching: {
+                title: 'No Command Matching',
+                description: 'No command matching the input was found.',
+                type: 'Reply'
+            }
+        }
     },
     Events: {
         InteractionCreate: {
@@ -152,5 +158,4 @@ const send = async (interaction, type, args = {}) => {
 
 module.exports = async (type, interaction, args) => {
     return send(interaction, type, args);
-
 };
