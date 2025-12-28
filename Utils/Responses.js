@@ -53,15 +53,6 @@ const RESPONSES = {
                 type: 'Reply'
             }
         }
-    },
-    Errors: {
-        Command: {
-            error: {
-                title: 'Error',
-                description: 'An error occurred while executing the command: {error}',
-                type: 'Reply'
-            }
-        }
     }
 };
 
@@ -161,4 +152,5 @@ const send = async (interaction, type, args = {}) => {
 
 module.exports = async (type, interaction, args) => {
     return send(interaction, type, args);
+
 };
